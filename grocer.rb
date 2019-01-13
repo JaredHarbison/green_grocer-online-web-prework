@@ -23,26 +23,37 @@ def apply_clearance(cart)
   cart
 end
 
-def apply_coupons(cart, coupons)
-  coupons.each do |coupon_hash|
-    fruit_name = coupon_hash[:item]
-    new_coupon_hash = {
-      :price => coupon_hash[:cost],
-      :clearance => "true",
-      :count => coupon_hash[:num]
-    }
-     if cart.key?(fruit_name)
-      new_coupon_hash[:clearance] = cart[fruit_name][:clearance]
-      if cart[fruit_name][:count]>= new_coupon_hash[:count]
-        new_coupon_hash[:count] = (cart[fruit_name][:count]/new_coupon_hash[:count]).floor
-        cart[fruit_name][:count] = (coupon_hash[:num])%(cart[fruit_name][:count])
+def apply_coupons(cart:[], coupons:[])
+    apply_coupons_hash = {}
+      coupon_items = [] # get coupon item names
+        coupons.each do |item|
+          coupon_items << item[:item]
+        end
+    cart.each do |item|
+      name = item[0]
+      attributes = item[1]
+      num_of_coupon = 0
+      coupon_price = 0
+      coupons.each do |coupon_hash| #get num and cost of that particular item from coupons hash
+        if coupon_hash[:item] == name
+          num_of_coupon = coupon_hash[:num]
+          coupon_price = coupon_hash[:cost]
+        end
       end
-      cart[fruit_name + " W/COUPON"] = new_coupon_hash 
-    end
-    end
-  return cart
-end
+      num_of_coupon #quantity of item required for coupon to work
 
+      if ((coupon_items.include?(name)) && (attributes[:count] >= num_of_coupon))
+      #for the current item, if the count is >= coupon quantity requirement
+      #decrease the item count and add the coupon hash 
+      quantity = (attributes[:count] / num_of_coupon) #item quantity/coupon quantity
+        apply_coupons_hash[name] = {:price => attributes[:price], :clearance => attributes[:clearance], :count =>(attributes[:count] - (num_of_coupon * quantity))}
+        apply_coupons_hash[name + ' W/COUPON'] = {:price => coupon_price, :clearance => attributes[:clearance], :count => quantity}
+      else #if no coupon for this item, then just add the existing item hash to apply_coupons_hash
+        apply_coupons_hash[name] = {:price => attributes[:price], :clearance => attributes[:clearance], :count => attributes[:count]}
+      end
+    end
+    apply_coupons_hash
+ end
 
 #####################################################################################
 
