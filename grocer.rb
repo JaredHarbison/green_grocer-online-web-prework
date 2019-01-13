@@ -23,7 +23,7 @@ def apply_clearance(cart)
   cart
 end
 
-def apply_coupons(cart:[], coupons:[])
+def apply_coupons(cart, coupons)
   result = {}
   cart.each do |food, info|
     coupons.each do |coupon|
