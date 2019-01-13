@@ -23,9 +23,7 @@ def apply_clearance(cart)
   cart
 end
 
-def apply_cupons 
-
-#####################################################################################
-
+def apply_coupons(cart, coupons)
+end
 def checkout(cart, coupons)
 end
