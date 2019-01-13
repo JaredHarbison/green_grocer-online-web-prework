@@ -3,7 +3,6 @@ def consolidate_cart(item)
   count = :count
 item.each do |hash|
   hash.each do |food, description|
-  
 if final.has_key?(food) == false
   final[food] = description
   final[food][count] = 1
