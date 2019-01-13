@@ -14,15 +14,6 @@ end
 final
 end
 
-def apply_coupons(cart, coupons)
- # code here
-end
-
-def checkout(cart, coupons)
-  # code here
-end
-
-
 def apply_clearance(cart)
   cart.each do |item, price_hash|
     if price_hash[:clearance] == true
