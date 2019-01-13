@@ -47,5 +47,30 @@ end
 #####################################################################################
 
 def checkout(cart, coupons)
-  # code here
+  total = 0
+  cart = consolidate_cart(cart)
+  coupons_applied = apply_coupons(cart, coupons)
+  
+  clearance_applied = apply_clearance(coupons_applied)
+  #puts clearance_applied
+  clearance_applied.each do |item, item_hash|
+    if item_hash[:count] < 0 
+      item_hash[:count] = -(item_hash[:count])
+    end
+    if !item.include?('W/COUPON')
+      if clearance_applied[item][:count] < clearance_applied["#{item} W/COUPON"][:count]
+        clearance_applied["#{item} W/COUPON"][:count] = clearance_applied[item][:count]
+      end
+    end
+    #if clearance_applied[item][:count] < clearance_applied["#{item} W/COUPON"][:count]
+      #clearance_applied["#{item} W/COUPON"][:count] = clearance_applied[item][:count]
+    #end
+    total += (item_hash[:price] * item_hash[:count])
+    puts total
+  end
+  if total >= 100
+    total = total - (total *0.10)
+  else 
+    total
+  end
 end
