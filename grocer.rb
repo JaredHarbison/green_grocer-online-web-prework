@@ -23,16 +23,6 @@ def apply_clearance(cart)
   cart
 end
 
-#####################################################################################
-
-def apply_coupons(cart, coupons)
- # code here
-end
-
-def checkout(cart, coupons)
-  # code here
-end
-
 def apply_coupons(cart, coupons)
   coupons.each do |coupon_hash|
     fruit_name = coupon_hash[:item]
@@ -41,7 +31,6 @@ def apply_coupons(cart, coupons)
       :clearance => "true",
       :count => coupon_hash[:num]
     }
-    
      if cart.key?(fruit_name)
       new_coupon_hash[:clearance] = cart[fruit_name][:clearance]
       if cart[fruit_name][:count]>= new_coupon_hash[:count]
@@ -52,4 +41,11 @@ def apply_coupons(cart, coupons)
     end
     end
   return cart
+end
+
+
+#####################################################################################
+
+def checkout(cart, coupons)
+  # code here
 end
